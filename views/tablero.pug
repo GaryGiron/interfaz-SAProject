@@ -1,0 +1,205 @@
+extends layout2
+
+block content
+    div
+        h1(style="color:blue; text-align:right;")= title
+    div
+        form(action="/turno/"+id+"/"+user+"/"+admin method="GET")
+            input(type="submit" value="TIRAR" class="glyphicon glyphicon-user btn-lg btn-primary")
+        //button(type='button' class="btn btn-success btn-lg" value="tirar" OnClick=`jugar(${token},${id},${user},${admin})` style="text-align:center;")
+        //button(type='button' class="btn btn-warning btn-lg" value="refrescar" OnClick=`refrescar()` style="text-align:center;")
+        h3(style="text-align:right;")= user
+    div
+        button
+    div
+        table.table.table-striped.right
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play1.jpg" id="0" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="11" width="50" height="50" style="display:block;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="21" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="31" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="41" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="51" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="61" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="71" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="81" width="50" height="50" style="display:none;")
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play2.jpg" id="x" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="12" width="50" height="50" style="display:block;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="22" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="32" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="42" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="52" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="62" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="72" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="82" width="50" height="50" style="display:none;")
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play1.jpg" id="0" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="00" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="00" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="" width="50" height="50" style="display:none;")
+            tr
+                th
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play1.jpg" id="y" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="161" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="151" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="141" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="131" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="121" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="111" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="101" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="91" width="50" height="50" style="display:none;")
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play2.jpg" id="z" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="162" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="152" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="142" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="132" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="122" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="112" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="102" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="92" width="50" height="50" style="display:none;")
+            tr
+                th
+            tr
+                th
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play1.jpg" id="w" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="171" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="181" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="191" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="201" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="211" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="221" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="231" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="241" width="50" height="50" style="display:none;")
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play2.jpg" id="v" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="172" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="182" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="192" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="202" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="212" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="222" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="232" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="242" width="50" height="50" style="display:none;")
+            tr
+                th
+            tr
+                th
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play1.jpg" id="m" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="321" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="311" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="301" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="291" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="281" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="271" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="261" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play1.jpg" id="251" width="50" height="50" style="display:none;")
+            tr
+                th
+                    button(class="glyphicon glyphicon-user btn-lg btn-success" style="display:none;")
+                    img(src="../../../../../../images/play2.jpg" id="n" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="322" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="312" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="302" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="292" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="282" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="272" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="262" width="50" height="50" style="display:none;")
+                th
+                    img(src="../../../../../../images/play2.jpg" id="252" width="50" height="50" style="display:none;")

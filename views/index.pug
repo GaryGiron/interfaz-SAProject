@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  br
+  p= e
+  h1(style="color:white;")= title
+  div
+    table.table.table-striped
+      tr
+        th
+          form(action="/users/"+user+"/"+admin method="GET")
+            input(type="submit" value="Administrar usuarios" class="glyphicon glyphicon-user btn-lg btn-primary")
+        th
+          form(action="/torneos/"+user+"/"+admin method="GET")
+            input(type="submit" value="Administrar Torneos" class="glyphicon glyphicon-user btn-lg btn-success")
+      

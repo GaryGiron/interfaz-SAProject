@@ -1,0 +1,18 @@
+extends layout3
+
+block content
+  h1(style="color:white;")= title
+  p= e
+  table
+    form(action="/logueo" method="POST")
+        tr
+            th
+                p Correo:
+                input(type="text" name="user" placeholder="Ingrese el Usuario")
+        tr
+            th
+                p Password:
+                input(type="text" name="pass" placeholder="Ingrese la contraseña")
+        tr
+            th
+                input(type="submit" value="Ingresar" class="glyphicon glyphicon-user btn-lg btn-success")

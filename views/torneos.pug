@@ -1,0 +1,76 @@
+extends layout3
+
+block content
+    h1(style="color:white;")= title
+    div
+        h2 TORNEOS
+        p= e
+        table.table.table-striped
+            tr  
+                td
+                    p Torneos Jugables:
+                td
+                    form(action="/searchtorneo/"+user+"/"+admin method="PUT")
+                        input(type="submit" value="Buscar Torneo" class="glyphicon glyphicon-user btn-lg btn-warning")
+        h2 Agregar Usuarios
+        table.table.table-striped
+            form(action="/creatorneo/"+user+"/"+admin method="POST")
+                tr 
+                    tr
+                        p Nombre del Torneo:
+                        input(type="text" name="nombre")
+                tr  
+                    td
+                        p Identificador:
+                        input(type="text" name="id1")
+                    td
+                        p Identificador:
+                        input(type="text" name="id2")
+                    td
+                        p Identificador:
+                        input(type="text" name="id3")
+                    td
+                        p Identificador:
+                        input(type="text" name="id4" )
+                tr
+                    td
+                        p Identificador:
+                        input(type="text" name="id5")
+                    td
+                        p Identificador:
+                        input(type="text" name="id6")
+                    td
+                        p Identificador:
+                        input(type="text" name="id7")
+                    td
+                        p Identificador:
+                        input(type="text" name="id8")
+                tr
+                    td
+                        p Identificador:
+                        input(type="text" name="id9")
+                    td
+                        p Identificador:
+                        input(type="text" name="id10")
+                    td
+                        p Identificador:
+                        input(type="text" name="id11")
+                    td
+                        p Identificador:
+                        input(type="text" name="id12")
+                tr
+                    td
+                        p Identificador:
+                        input(type="text" name="id13")
+                    td
+                        p Identificador:
+                        input(type="text" name="id14")
+                    td
+                        p Identificador:
+                        input(type="text" name="id15")
+                    td
+                        p Identificador:
+                        input(type="text" name="id16")
+                tr
+                    td
+                        input(type="submit" value="Validar usuarios y crear" class="glyphicon glyphicon-user btn-lg btn-success")

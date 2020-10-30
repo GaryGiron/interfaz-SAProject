@@ -1,0 +1,22 @@
+extends layout3
+
+block content
+h1(style="color:white;")= title
+div
+    h2 Ver Torneos Jugables:
+    table.table.table-striped
+        for usu in usuarios
+            tr  
+                td
+                    p Identificador:
+                    input(type="text" name="id" value=usu.id)
+                td
+                    p Nombres:
+                    input(type="text" name="nombre" value=usu.nombre)
+                td
+                    form(action="/jugar/"+usu.nombre+"/"+user+"/"+admin method="GET")
+                        input(type="submit" value="Iniciar juego" class="glyphicon glyphicon-user btn-lg btn-info")
+                td
+                    form(action="/simular/"+usu.nombre+"/"+user+"/"+admin method="GET")
+                        input(type="submit" value="Simular juego" class="glyphicon glyphicon-user btn-lg btn-info")
+            

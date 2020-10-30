@@ -1,0 +1,26 @@
+extends layout3
+
+block content
+h1(style="color:white;")= title
+p= e
+div
+    table.table.table-striped
+      tr
+        th
+          form(action="/newuser/"+user+"/"+admin method="GET")
+            input(type="submit" value="Crear usuario" class="glyphicon glyphicon-user btn-lg btn-success")
+
+div
+    h2 Ver Usuarios
+    table.table.table-striped
+        for usu in usuarios
+            tr  
+                td=usu.id
+                td=usu.nombre
+                td
+                    form(action="/editauser/"+usu.id+"/"+user+"/"+admin method="GET")
+                        input(type="submit" value="Editar usuario" class="glyphicon glyphicon-user btn-lg btn-warning")
+                td
+                    form(action="/elimina/"+usu.id+"/"+user+"/"+admin method="GET")
+                        input(type="submit" value="Eliminar usuario" class="glyphicon glyphicon-user btn-lg btn-danger")
+      
