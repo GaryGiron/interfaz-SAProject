@@ -1,0 +1,32 @@
+extends layout3
+
+block content
+h1(style="color:white;")= title
+div
+    h2 Ver Usuarios
+    table.table.table-striped
+        for usu in usuarios
+            form(action="/updateuser/"+user+"/"+admin method="PUT")
+                tr  
+                    td
+                        p Identificador:
+                        input(type="text" name="id" value=usu.id)
+                tr
+                    td
+                        p Nombres:
+                        input(type="text" name="nombre" value=usu.nombre)
+                tr
+                    td
+                        p Apellidos:
+                        input(type="text" name="apellido" value=usu.apellido)
+                tr
+                    td
+                        p Password:
+                        input(type="text" name="pass" value=usu.pass)
+                tr
+                    td
+                        input(type="submit" value="Editar usuario" class="glyphicon glyphicon-user btn-lg btn-warning")
+                    td
+                        form(action="/eliminalo/"+user+"/"+admin method="GET")
+                            input(type="submit" value="Eliminar usuario" class="glyphicon glyphicon-user btn-lg btn-danger")
+      

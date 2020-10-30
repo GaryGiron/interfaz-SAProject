@@ -1,0 +1,32 @@
+extends layout3
+
+block content
+h1(style="color:white;")= title
+div
+    h2 Nuevo Usuario
+    table.table.table-striped
+        form(action="/crearuser/"+user+"/"+admin method="POST")
+            tr  
+                td
+                    p Nombres:
+                    input(type="text" name="nombre")
+            tr
+                td
+                    p Apellidos:
+                    input(type="text" name="apellido")
+            tr
+                td
+                    p Correo:
+                    input(type="text" name="correo" )
+            tr
+                td
+                    p Password:
+                    input(type="text" name="pass" )
+            tr
+                td
+                    p Administrador:
+                    input(type="text" name="admin")
+            tr
+                td
+                    input(type="submit" value="Crear usuario" class="glyphicon glyphicon-user btn-lg btn-success")
+        
