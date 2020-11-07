@@ -21,3 +21,5 @@ Servicio para la autenticacion por medio de token bearer el cual provee de 4 dis
 https://github.com/CiberVeliz/LAB-SA-Proyecto-JWT
 
 ### Servicio de Torneos
+Servicio que maneja la creacion y administracion de torneos, como las interacciones con los usuarios y los juegos, asi como tambien tiene la parte visual de todas sus interacciones, siendo la UI de gran parte de la solucion:
+https://github.com/CiberVeliz/LAB-SA-Proyecto-Torneo
