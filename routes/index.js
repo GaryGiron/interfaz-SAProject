@@ -314,8 +314,8 @@ router.get('/torneos/:user/:admin', function(req, res, next) {
   res.render('torneos', { title: 'Administracion de Torneos', e: "", user:req.params.user, admin:req.params.admin});
 });
 
-router.get('/jugar/:id/:user/:admon/:pos1/:pos2', function(req, res, next) {
-  res.render('tablero', { title: 'Sum Swamp', id:req.params.id, user:req.params.user, admin:req.params.admin});
+router.get('/jugar/:id/:user/:admin/:pos1/:pos2', function(req, res, next) {
+  res.render('tablero', { title: 'Sum Swamp', id:req.params.id, user:req.params.user, admin:req.params.admin, p1:req.params.pos1, p2:req.params.pos2});
 });
 
 router.get('/simular/:id/:user/:admon', function(req, res, next) {
@@ -373,151 +373,161 @@ router.get('/simular/:id/:user/:admon', function(req, res, next) {
 });
 
 
-router.get('/jugar', function(req, res, next) {
+/*router.get('/jugar', function(req, res, next) {
   res.render('tablero', { title: 'Sum Swamp', id:"prueba", user:"admin", admin:true});
 });
-
+*/
 router.get('/gano/:msj/:user/:admin', function(req, res, next){
   res.render('index', { title: 'Generador de Juegos y Torneos', e: req.params.msj+" esta partida", user:req.params.user, admin:req.params.admin});
 });
 
-router.get('/turno/:id/:user/:admon', function(req, res, next) {
-  var turno=0;
-  var posicion=0;
-  var pos1=0;
-  var pos2=0;
-  var optionsturn = {
-    'method': 'GET',
-    'url': process.env.JUEGOS+'obtenerTurno/'+req.params.id+"/"+req.params.user
-  };
-  request(optionsturn, function (error, response) {
-    if (error) console.log("Error: "+error);
-    console.log(response.body);
-    turno=JSON.parse(response.body).turno;
-    console.log(turno);
-    if(turno==1){
-      console.log("entro al turno")
-      var optionspos = {
-        'method': 'GET',
-        'url': process.env.JUEGOS+'/obtenerPosicion/'+req.params.id
-      };
-      request(optionspos, function (error2, response2) {
-        if (error2) console.log("Error: "+error2);
-        console.log(response2.body);
-        posicion=JSON.parse(response2.body);
-        pos1=posicion[0].posicion;
-        pos2=posicion[1].posicion;
-        var optionsdado = {
+router.get('/turno/:id/:user/:admon/:p1/:p2', function(req, res, next) {
+  request(options, function (error, response, body) {
+    if (error) {console.log("Error: "+error)}
+    else{
+      var myJson = JSON.parse(body);
+        token = myJson["token"];
+        var turno=0;
+        var posicion=0;
+        var pos1=0;
+        var pos2=0;
+        var optionsturn = {
           'method': 'GET',
-          'url': process.env.DADOS+'/tirar/3',
-          'headers': {
-            'Authorization': 'Bearer '+token
-          }
+          'url': process.env.JUEGOS+'obtenerTurno/'+req.params.id+"/"+req.params.user
         };
-        request(optionsdado, function (error3, response3) {
-          if (error3)
-          {
-            console.log("Error: "+error3);
-          }else{
-           console.log(response3.body);
-           var info = JSON.parse(response3.body).dados;
-           console.log(info[0]);
-           console.log(info[1]);
-           console.log(info[2]);
-           var posres=1;
-           if(req.params.user==posicion[0].jugador){
-            if(info[2]>3){
-              var suma=Math.abs(info[0]+info[1])
-              console.log("suma: "+suma);
-              pos1= Number(pos1) + suma;
-            }else{
-              var suma=Math.abs(info[0]-info[1])
-              console.log("resta: " +suma);
-              pos1= Number(pos1) + suma;
-            }
-            posres=pos1;
-            if(posres>32){
-              var optionsGanador = {
-                'method': 'POST',
-                'url': process.env.TORNEOS+'/guardarPosicion/'+req.params.id,
-                'headers': {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"marcador":[1]})
-              };
-              request(optionsGanador, function (error6, response6) {
-                if (error6) console.log("Error: "+error6);
-                console.log(response6.body);
-              });
-              var optionsFin = {
-                'method': 'POST',
-                'url': process.env.JUEGOS+'/finalizarPartida/'+req.params.id
-              };
-              request(optionsFin, function (error7, response7) {
-                if (error7) console.log("Error: "+error7);
-                console.log(response7.body);
-              });
-            }
-          }else{
-            if(info[2]>3){
-              var suma=Math.abs(info[0]+info[1])
-              console.log("suma: "+suma);
-              pos2= Number(pos2) + suma;
-            }else{
-              var suma=Math.abs(info[0]-info[1])
-              console.log("resta: " +suma);
-              pos2= Number(pos2) + suma;
-            }
-            posres=pos2;
-            if(posres>32){
-              var optionsGanador = {
-                'method': 'POST',
-                'url': process.env.TORNEOS+'/guardarPosicion/'+req.params.id,
-                'headers': {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"marcador":[2]})
-              };
-              request(optionsGanador, function (error6, response6) {
-                if (error6) console.log("Error: "+error6);
-                console.log(response6.body);
-              });
-              var optionsFin = {
-                'method': 'POST',
-                'url': process.env.JUEGOS+'finalizarPartida/'+req.params.id
-              };
-              request(optionsFin, function (error7, response7) {
-                if (error7) console.log("Error: "+error7);
-                console.log(response7.body);
-              });
-            }
-          }
-          console.log("posicion jug 1: "+pos1);
-          console.log("posicion jug 2: "+pos2);
-
-          var optionsSavePos = {
-            'method': 'POST',
-            'url': process.env.JUEGOS+'guardarPosicion/'+req.params.id+'/'+req.params.user+'/'+posres
-          };
-          request(optionsSavePos, function (error4, response4) {
-            if (error4) console.log("Error: "+error4);
-            console.log(response4.body);
-            var optionsCambiaTurn = {
-              'method': 'POST',
-              'url': process.env.JUEGOS+'cambiarTurno/'+req.params.id+'/'+req.params.user
+        request(optionsturn, function (error, response) {
+          if (error) console.log("Error: "+error);
+          console.log(response.body);
+          turno=JSON.parse(response.body).turno;
+          console.log(turno);
+          if(turno==1){
+            console.log("entro al turno")
+            var optionspos = {
+              'method': 'GET',
+              'url': process.env.JUEGOS+'/obtenerPosicion/'+req.params.id
             };
-            request(optionsCambiaTurn, function (error5, response5) {
-              if (error5) console.log("Error: "+error5);
-              console.log(response5.body);
-              res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id,+'/'+req.params.user+'/true/'+pos1+'/'+pos2);
-            });
-          }});
+            request(optionspos, function (error2, response2) {
+              if (error2) console.log("Error: "+error2);
+              console.log(response2.body);
+              posicion=JSON.parse(response2.body);
+              pos1=posicion[0].posicion;
+              pos2=posicion[1].posicion;
+              var optionsdado = {
+                'method': 'GET',
+                'url': process.env.DADOS+'tirar/3',
+                'headers': {
+                  'Authorization': 'Bearer '+token
+                }
+              };
+              request(optionsdado, function (error3, response3) {
+                if (error3)
+                {
+                  console.log("Error: "+error3);
+                }else{
+                console.log(response3.body);
+                var info = JSON.parse(response3.body).dados;
+                console.log(info[0]);
+                console.log(info[1]);
+                console.log(info[2]);
+                var posres=1;
+                if(req.params.user==posicion[0].jugador){
+                  if(info[2]>3){
+                    var suma=Math.abs(info[0]+info[1])
+                    console.log("suma: "+suma);
+                    pos1= Number(pos1) + suma;
+                  }else{
+                    var suma=Math.abs(info[0]-info[1])
+                    console.log("resta: " +suma);
+                    pos1= Number(pos1) + suma;
+                  }
+                  posres=pos1;
+                  if(posres>32){
+                    var optionsGanador = {
+                      'method': 'POST',
+                      'url': process.env.TORNEOS+'/guardarPosicion/'+req.params.id,
+                      'headers': {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({"marcador":[1]})
+                    };
+                    request(optionsGanador, function (error6, response6) {
+                      if (error6) console.log("Error: "+error6);
+                      console.log(response6.body);
+                    });
+                    var optionsFin = {
+                      'method': 'POST',
+                      'url': process.env.JUEGOS+'/finalizarPartida/'+req.params.id
+                    };
+                    request(optionsFin, function (error7, response7) {
+                      if (error7) console.log("Error: "+error7);
+                      console.log(response7.body);
+                    });
+                  }
+                }else{
+                  if(info[2]>3){
+                    var suma=Math.abs(info[0]+info[1])
+                    console.log("suma: "+suma);
+                    pos2= Number(pos2) + suma;
+                  }else{
+                    var suma=Math.abs(info[0]-info[1])
+                    console.log("resta: " +suma);
+                    pos2= Number(pos2) + suma;
+                  }
+                  posres=pos2;
+                  if(posres>32){
+                    var optionsGanador = {
+                      'method': 'POST',
+                      'url': process.env.TORNEOS+'/guardarPosicion/'+req.params.id,
+                      'headers': {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({"marcador":[2]})
+                    };
+                    request(optionsGanador, function (error6, response6) {
+                      if (error6) console.log("Error: "+error6);
+                      console.log(response6.body);
+                    });
+                    var optionsFin = {
+                      'method': 'POST',
+                      'url': process.env.JUEGOS+'finalizarPartida/'+req.params.id
+                    };
+                    request(optionsFin, function (error7, response7) {
+                      if (error7) console.log("Error: "+error7);
+                      console.log(response7.body);
+                    });
+                  }
+                }
+                console.log("posicion jug 1: "+pos1);
+                console.log("posicion jug 2: "+pos2);
+
+                var optionsSavePos = {
+                  'method': 'POST',
+                  'url': process.env.JUEGOS+'guardarPosicion/'+req.params.id+'/'+req.params.user+'/'+posres
+                };
+                request(optionsSavePos, function (error4, response4) {
+                  if (error4) console.log("Error: "+error4);
+                  console.log(response4.body);
+                  var optionsCambiaTurn = {
+                    'method': 'POST',
+                    'url': process.env.JUEGOS+'cambiarTurno/'+req.params.id+'/'+req.params.user
+                  };
+                  request(optionsCambiaTurn, function (error5, response5) {
+                    if (error5) console.log("Error: "+error5);
+                    console.log(response5.body);
+                    res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id,+'/'+req.params.user+'/true/'+pos1+'/'+pos2);
+                    return;
+                  });
+                });
+              }});
+            }); 
+          }else{
+            res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id+'/'+req.params.user+'/true/'+req.params.p1+'/'+req.params.p2);
+            return;
+          }
         });
-      }); 
-    }else{
-      res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id+'/'+req.params.user+'/true/1/1');
-    }
+    }   
   });
+  
   //res.redirect(200, 'http://localhost:3100/turno/'+req.params.id,+'/'+req.params.user+'/'+req.params.admin+'?pos1='+posicion+'&pos2='+posicion);
   //res.render('tablero', { title: 'Sum Swamp', id:req.params.id, user:req.params.user, admin:req.params.admin});
 });
