@@ -415,14 +415,17 @@ router.get('/turno/:id/:user/:admon', function(req, res, next) {
           }
         };
         request(optionsdado, function (error3, response3) {
-          if (error3) console.log("Error: "+error3);
-          console.log(response3.body);
-          var info = JSON.parse(response3.body).dados;
-          console.log(info[0]);
-          console.log(info[1]);
-          console.log(info[2]);
-          var posres=0;
-          if(req.params.user==posicion[0].jugador){
+          if (error3)
+          {
+            console.log("Error: "+error3);
+          }else{
+           console.log(response3.body);
+           var info = JSON.parse(response3.body).dados;
+           console.log(info[0]);
+           console.log(info[1]);
+           console.log(info[2]);
+           var posres=1;
+           if(req.params.user==posicion[0].jugador){
             if(info[2]>3){
               var suma=Math.abs(info[0]+info[1])
               console.log("suma: "+suma);
@@ -506,14 +509,17 @@ router.get('/turno/:id/:user/:admon', function(req, res, next) {
             request(optionsCambiaTurn, function (error5, response5) {
               if (error5) console.log("Error: "+error5);
               console.log(response5.body);
+              res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id,+'/'+req.params.user+'/true/'+pos1+'/'+pos2);
             });
-          });
+          }});
         });
       }); 
+    }else{
+      res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id+'/'+req.params.user+'/true/1/1');
     }
   });
   //res.redirect(200, 'http://localhost:3100/turno/'+req.params.id,+'/'+req.params.user+'/'+req.params.admin+'?pos1='+posicion+'&pos2='+posicion);
-  res.render('tablero', { title: 'Sum Swamp', id:req.params.id, user:req.params.user, admin:req.params.admin});
+  //res.render('tablero', { title: 'Sum Swamp', id:req.params.id, user:req.params.user, admin:req.params.admin});
 });
 
 
