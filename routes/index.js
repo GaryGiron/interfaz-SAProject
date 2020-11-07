@@ -4,19 +4,55 @@ var env = require('node-env-file'); // .env file
 env(__dirname + '/.env');
 var router = express.Router();
 var token;
-var options = {
-  method: 'GET',
+var token2;
+var token3;
+var token4;
+var optionsJWT1 = {
+  method: 'POST',
   url: process.env.JWT,  
+};
+var optionsJWT2 = {
+  method: 'POST',
+  url: process.env.JWT2,  
+};
+var optionsJWT3 = {
+  method: 'POST',
+  url: process.env.JWT3,  
+};
+var optionsJWT4 = {
+  method: 'POST',
+  url: process.env.JWT4,  
 };
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  request(options, function (error, response, body) {
+  request(optionsJWT1, function (error, response, body) {
     if (error) console.log("Error: "+error);
-        var myJson = JSON.parse(body);
-        token = myJson["token"];
-        console.log(token);
-        res.render('inicio', { title: 'Login' , e:""});
-    });
+      var myJson = JSON.parse(body);
+      token = myJson["token"];
+      console.log(token);
+      res.render('inicio', { title: 'Login' , e:""});
+  });
+  request(optionsJWT2, function (error, response, body) {
+    if (error) console.log("Error: "+error);
+      var myJson = JSON.parse(body);
+      token2 = myJson["token"];
+      console.log(token2);
+      res.render('inicio', { title: 'Login' , e:""});
+  });
+  request(optionsJWT3, function (error, response, body) {
+    if (error) console.log("Error: "+error);
+      var myJson = JSON.parse(body);
+      token3 = myJson["token"];
+      console.log(token3);
+      res.render('inicio', { title: 'Login' , e:""});
+  });
+  request(optionsJWT4, function (error, response, body) {
+    if (error) console.log("Error: "+error);
+      var myJson = JSON.parse(body);
+      token4 = myJson["token"];
+      console.log(token4);
+      res.render('inicio', { title: 'Login' , e:""});
+  });
 });
 
 router.post('/logueo', function(req, res, next) {
@@ -26,7 +62,7 @@ router.post('/logueo', function(req, res, next) {
     'method': 'GET',
     'url': process.env.USUARIOS+"/login?email="+req.body.user+"&password="+req.body.pass,
     'headers': {
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer '+token3
     }
   };
   request(options, function (error, response) {
@@ -54,9 +90,9 @@ router.post('/logueo', function(req, res, next) {
 router.get('/users/:user/:admin', function(req, res, next) {
   var options = {
     'method': 'GET',
-    'url': process.env.USUARIOS+"/jugadores",
+    'url': process.env.USUARIOS+"/listado",
     'headers': {
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer '+token3
     }
   };
   request(options, function (error, response) {
@@ -65,8 +101,9 @@ router.get('/users/:user/:admin', function(req, res, next) {
       res.render('index', { title: 'Generador de Juegos y Torneos', e: error, user:req.params.user, admin:req.params.admin});
       }
     console.log(`statusCode: ${response.statusCode}`)
-    console.log(response.body)
-    //res.render('usuario', { title: 'Administrador de usuarios', usuarios:response.body, e:"", user:req.params.user, admin:req.params.admin});
+    var infusu = JSON.parse(response.body);
+    console.log(infusu[0]);
+    res.render('usuario', { title: 'Administrador de usuarios', usuarios:infusu, e:"", user:req.params.user, admin:req.params.admin});
   });
   /*request.get(process.env.USUARIOS+"/jugadores", (error, res2, body) => {
     if (error) {
@@ -84,28 +121,37 @@ router.get('/newuser/:user/:admin', function(req, res, next) {
 });
 
 router.post('/crearuser/:user/:admin',function(req, res, next) {
+  var envio = JSON.stringify({"id":0,"nombres": req.body.nombre,"apellidos":req.body.apellido,"email":req.body.correo,"password":req.body.pass,"administrador":(req.body.admin=="true")});
+  console.log(envio);
   if(req.params.admin){
-    var options = {
+    /*var options = {
       'method': 'POST',
       'url': process.env.USUARIOS+"/jugadores",
       'headers': {
-        'Authorization': 'Bearer '+token
+        'Authorization': 'Bearer '+token3,
+        'Accept-Encoding': 'gzip'
       },
-      json: {
-        'apellidos': req.body.apellido,
-        'correo': req.body.correo,
-        'password': req.body.pass,
-        'administrador': req.body.admin
-      }
+      body: JSON.stringify(envio)
+    };*/
+    var options = {
+      'method': 'POST',
+      'url': process.env.USUARIOS+'/jugadores',
+      'headers': {
+        'Authorization': 'Bearer '+token3,
+        'Content-Type': 'application/json'
+      },
+      body: envio
     };
+    //zlib = require('zlib')
     request(options, function (error, response) {
       if (error) {
         console.error(error)
         res.render('newuser', { title: 'Creacion de Usuarios', e:error, user:req.params.user, admin:req.params.admin});
+      }else{
+        console.log(`statusCode: ${response.statusCode}`)
+        console.log(response.body)
+        res.render('index', { title: 'Generador de Juegos y Torneos', e: "Usuario Creado Exitosamente", user:req.params.user, admin:req.params.admin});
       }
-      console.log(`statusCode: ${res2.statusCode}`)
-      console.log(body)
-      res.render('index', { title: 'Generador de Juegos y Torneos', e: "Usuario Creado Exitosamente", user:req.params.user, admin:req.params.admin});
     });
   }else{
     res.render('newuser', { title: 'Creacion de Usuarios', e:"El usuario no puede crear usuarios porque no es administrador", user:req.params.user, admin:req.params.admin});
@@ -134,19 +180,20 @@ router.get('/editauser/:id/:user/:admin', function(req, res, next) {
   if(req.params.admin){
     var options = {
       'method': 'GET',
-      'url': process.env.USUARIOS+"/jugadores",
+      'url': process.env.USUARIOS+"/jugadores/"+req.params.id,
       'headers': {
-        'Authorization': 'Bearer '+token
+        'Authorization': 'Bearer '+token3
       }
     };
     request(options, function (error, response) {
       if (error) {
         console.error(error)
         res.render('index', { title: 'Generador de Juegos y Torneos', e: error, user:req.params.user, admin:req.params.admin});
+        }else{
+          console.log(`statusCode: ${response.statusCode}`)
+          console.log(JSON.parse(response.body))
+          res.render('detalle', { title: 'Actualizacion de usuarios', usuarios:JSON.parse(response.body), e:"", user:req.params.user, admin:req.params.admin});    
         }
-      console.log(`statusCode: ${res2.statusCode}`)
-      console.log(body)
-      res.render('detalle', { title: 'Actualizacion de usuarios', usuarios:body, e:"", user:req.params.user, admin:req.params.admin});
     });
   }else{
     res.render('index', { title: 'Generador de Juegos y Torneos', e: "El usuario no puede editar otros usuarios porque no es administrador", user:req.params.user, admin:req.params.admin});
@@ -162,29 +209,29 @@ router.get('/editauser/:id/:user/:admin', function(req, res, next) {
     })*/
 });
 
-router.post('/updateuser/:user/:admin',function(req, res, next) {
+router.post('/updateuser/:id/:user/:admin',function(req, res, next) {
   if(req.params.admin){
+    var envio = JSON.stringify({"id":req.params.id,"nombres": req.body.nombre,"apellidos":req.body.apellido,"email":req.body.correo,"password":req.body.pass,"administrador":(req.body.admin=="true")});
+    console.log("Se esta enviando:");
+    console.log(envio);
     var options = {
       'method': 'PUT',
-      'url': process.env.USUARIOS+"/jugadores",
+      'url': process.env.USUARIOS+"/jugadores/"+req.params.id,
       'headers': {
-        'Authorization': 'Bearer '+token
+        'Authorization': 'Bearer '+token3,
+        'Content-Type': 'application/json'
       },
-      formData: {
-        'nombres': req.body.nombre,
-        'apellidos': req.body.apellido,
-        'correo': req.body.correo,
-        'password': req.body.pass
-      }
+      body: envio
     };
     request(options, function (error, response) {
       if (error) {
         console.error(error)
         res.render('index', { title: 'Generador de Juegos y Torneos', e: error, user:req.params.user, admin:req.params.admin});
+      }else{
+        console.log(`statusCode: ${response.statusCode}`)
+        console.log(response.body)
+        res.render('index', { title: 'Generador de Juegos y Torneos', e: "Usuario Editado Exitosamente", user:req.params.user, admin:req.params.admin});
       }
-      console.log(`statusCode: ${res2.statusCode}`)
-      console.log(body)
-      res.render('index', { title: 'Generador de Juegos y Torneos', e: "Usuario Editado Exitosamente", user:req.params.user, admin:req.params.admin});
     });
   }else{
     res.render('index', { title: 'Generador de Juegos y Torneos', e: "El usuario no puede editar otros usuarios porque no es administrador", user:req.params.user, admin:req.params.admin});
@@ -214,7 +261,7 @@ router.get('/torneos/:id/:user/:admin', function(req, res, next) {
     'method': 'GET',
     'url': process.env.USUARIOS+"/jugadores",
     'headers': {
-      'Authorization': 'Bearer '+token
+      'Authorization': 'Bearer '+token4
     }
   };
   request(options, function (error, response) {
@@ -222,9 +269,9 @@ router.get('/torneos/:id/:user/:admin', function(req, res, next) {
       console.error(error)
       res.render('index', { title: 'Generador de Juegos y Torneos', e: error, user:req.params.user, admin:req.params.admin});
       }
-    console.log(`statusCode: ${res2.statusCode}`)
-    console.log(body)
-    res.render('torneolist', { title: 'Lista de Torneos Jugables', usuarios:body, e:"", user:req.params.user, admin:req.params.admin});
+    console.log(`statusCode: ${response.statusCode}`)
+    console.log(response.body)
+    res.render('torneolist', { title: 'Lista de Torneos Jugables', usuarios:response.body, e:"", user:req.params.user, admin:req.params.admin});
   });
   /*request.get(process.env.torneos+"/torneos/"+req.params.id, (error, res2, body) => {
     if (error) {
@@ -271,8 +318,8 @@ router.post('/creatorneo/:user/:admin',function(req, res, next) {
         console.error(error)
         res.render('torneos', { title: 'Administracion de Torneos', e:error, user:req.params.user, admin:req.params.admin});
       }
-      console.log(`statusCode: ${res2.statusCode}`)
-      console.log(body)
+      console.log(`statusCode: ${response.statusCode}`)
+      console.log(response.body)
       res.render('index', { title: 'Generador de Juegos y Torneos', e: "Torneo Creado Exitosamente", user:req.params.user, admin:req.params.admin});
     });  
   }else{
@@ -506,6 +553,7 @@ router.get('/turno/:id/:user/:admon', function(req, res, next) {
             request(optionsCambiaTurn, function (error5, response5) {
               if (error5) console.log("Error: "+error5);
               console.log(response5.body);
+              res.redirect(200, process.env.INTERFAZ+req.params.id,+'/'+req.params.user+'/'+req.params.admin+'/'+pos1+'/'+pos2);
             });
           });
         });

@@ -1,32 +1,35 @@
 extends layout3
 
 block content
-h1(style="color:white;")= title
-div
-    h2 Ver Usuarios
-    table.table.table-striped
-        for usu in usuarios
-            form(action="/updateuser/"+user+"/"+admin method="PUT")
+    h1(style="color:white;")= title
+    div
+        h2 Ver Usuarios
+        table.table.table-striped
+            form(action="/updateuser/"+usuarios.id+"/"+user+"/"+admin method="POST")
                 tr  
                     td
                         p Identificador:
-                        input(type="text" name="id" value=usu.id)
+                        input(type="text" name="id" value=usuarios.id)
                 tr
                     td
                         p Nombres:
-                        input(type="text" name="nombre" value=usu.nombre)
+                        input(type="text" name="nombre" value=usuarios.nombres)
                 tr
                     td
                         p Apellidos:
-                        input(type="text" name="apellido" value=usu.apellido)
+                        input(type="text" name="apellido" value=usuarios.apellidos)
+                tr
+                    td
+                        p Email:
+                        input(type="text" name="correo" value=usuarios.email)
                 tr
                     td
                         p Password:
-                        input(type="text" name="pass" value=usu.pass)
+                        input(type="text" name="pass" value=usuarios.password)
+                tr
+                    td
+                        p Administrador:
+                        input(type="text" name="admin" value=usuarios.administrador)
                 tr
                     td
                         input(type="submit" value="Editar usuario" class="glyphicon glyphicon-user btn-lg btn-warning")
-                    td
-                        form(action="/eliminalo/"+user+"/"+admin method="GET")
-                            input(type="submit" value="Eliminar usuario" class="glyphicon glyphicon-user btn-lg btn-danger")
-      
