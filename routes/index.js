@@ -391,6 +391,7 @@ router.get('/turno/:id/:user/:admon/:p1/:p2', function(req, res, next) {
         var posicion=0;
         var pos1=0;
         var pos2=0;
+        var terminado=0;
         var optionsturn = {
           'method': 'GET',
           'url': process.env.JUEGOS+'obtenerTurno/'+req.params.id+"/"+req.params.user
@@ -412,6 +413,17 @@ router.get('/turno/:id/:user/:admon/:p1/:p2', function(req, res, next) {
               posicion=JSON.parse(response2.body);
               pos1=posicion[0].posicion;
               pos2=posicion[1].posicion;
+              if(pos1>=32){
+                terminado=1;
+                res.send("EL JUGADOR 1 YA HA GANADO ESTA PARTIDA");
+                return;
+              }
+              if(pos2>=32){
+                terminado=1;
+                res.send("EL JUGADOR 2 YA HA GANADO ESTA PARTIDA");
+                return;
+              }
+              if(terminado==0){
               var optionsdado = {
                 'method': 'GET',
                 'url': process.env.DADOS+'tirar/3',
@@ -456,11 +468,14 @@ router.get('/turno/:id/:user/:admon/:p1/:p2', function(req, res, next) {
                     });
                     var optionsFin = {
                       'method': 'POST',
-                      'url': process.env.JUEGOS+'/finalizarPartida/'+req.params.id
+                      'url': process.env.JUEGOS+'ganador/'+req.params.id+'/1'
                     };
+                    terminado=1;
                     request(optionsFin, function (error7, response7) {
                       if (error7) console.log("Error: "+error7);
                       console.log(response7.body);
+                      res.send("FELICIDADES USUARIO: "+req.params.user+", HA GANADO ESTA PARTIDA!!!");
+                      return;
                     });
                   }
                 }else{
@@ -489,14 +504,18 @@ router.get('/turno/:id/:user/:admon/:p1/:p2', function(req, res, next) {
                     });
                     var optionsFin = {
                       'method': 'POST',
-                      'url': process.env.JUEGOS+'finalizarPartida/'+req.params.id
+                      'url': process.env.JUEGOS+'ganador/'+req.params.id+'/2'
                     };
+                    terminado=1;
                     request(optionsFin, function (error7, response7) {
                       if (error7) console.log("Error: "+error7);
                       console.log(response7.body);
+                      res.send("FELICIDADES USUARIO: "+req.params.user+", HA GANADO ESTA PARTIDA!!!");
+                      return;
                     });
                   }
                 }
+                if(terminado==0){
                 console.log("posicion jug 1: "+pos1);
                 console.log("posicion jug 2: "+pos2);
 
@@ -514,12 +533,19 @@ router.get('/turno/:id/:user/:admon/:p1/:p2', function(req, res, next) {
                   request(optionsCambiaTurn, function (error5, response5) {
                     if (error5) console.log("Error: "+error5);
                     console.log(response5.body);
-                    res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id,+'/'+req.params.user+'/true/'+pos1+'/'+pos2);
+                    console.log("Posicion 1: "+pos1);
+                    console.log("Posicion 1: "+pos2);
+                    console.log("Posicion Resultado: "+posres);
+                    var dir = process.env.INTERFAZ+'/jugar/'+req.params.id+'/'+req.params.user+'/true/'+pos1+'/'+pos2;
+                    console.log(dir);
+                    res.redirect(dir);
                     return;
                   });
                 });
+                }
               }});
-            }); 
+             }
+            });
           }else{
             res.redirect(200, process.env.INTERFAZ+'/jugar/'+req.params.id+'/'+req.params.user+'/true/'+req.params.p1+'/'+req.params.p2);
             return;
